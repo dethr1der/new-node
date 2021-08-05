@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{title}}</title>
+</head>
+<body>
+<section class="mt-5">
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <form method="post" action="/api/v1/movies/import" enctype="multipart/form-data"
+                  class="col-12 col-md-6 col-lg-6 border rounded p-3">
+                <h4 class="text-center">To upload movies select file and press "Load"</h4>
+                <div class="mt-4 d-flex justify-content-center">
+                    <input type="file" name="import" accept="*/*">
+                </div>
+                <div class="col-12 mt-4 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Load</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>
