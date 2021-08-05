@@ -1,11 +1,11 @@
 const db = require("../models");
 const {Op} = require("sequelize");
-const fileHelper = require('../fileParser');
+const moviesParser = require('../moviesParser');
 
 class MoviesController {
 
     async insertOne(req, res) {
-        const movieObj = {title: req.body.title, released: new Date(req.body.released), format: req.body.format}
+        const movieObj = {title: req.body.title, released: req.body.released, format: req.body.format}
         const actorArray = req.body.actors;
         const singleActor = {};
         const moviesActorsAssociation = [];
@@ -49,23 +49,36 @@ class MoviesController {
 
     async import(req, res) {
         const file = req.files;
-        console.log(file);
-        const movies = await fileHelper(file.import.tempFilePath);
-        const moviesArray = []
+        const movies = await moviesParser(file.import.tempFilePath);
+
+        const moviesArray = [];
         let actorsArray = [];
+
         movies.forEach((movie, index) => {
             moviesArray.push({title: movie.title, released: movie.released, format: movie.format});
             actorsArray.push(movie.actors);
         });
-        actorsArray = actorsArray.map((actors, index) => {
-            return actorsArray[index] = actors.map((actor, actorIndex) => {
-                return actors[actorIndex] = {name: actor};
-            });
-        });
+
+        let actorsCreate = await Promise.all(actorsArray.map(async (actors, index) => {
+            return actorsArray[index] = await Promise.all(actors.map(async (actor, actorIndex) => {
+                return actors[actorIndex] = await db.actors.findOrCreate({
+                    where: {name: actor},
+                    attributes: ['id']
+                });
+            }));
+        }));
         const moviesSave = await db.movies.bulkCreate(moviesArray);
-        //SQL query in forEach() dangerous but I don't have another idea :(((
 
+        const Association = await Promise.all(actorsCreate.map(async (actors, actorsIndex) => {
+            return await Promise.all(actors.map(async (actor, index) => {
+                return actor[index] = await db.moviesActors.create({
+                    movieId: moviesSave[actorsIndex].id,
+                    actorId: actor[0].id
+                });
+            }));
+        }));
 
+        res.status(200).send({message: "Films has been exported"});
     }
 
     async show(req, res) {
