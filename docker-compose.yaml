@@ -1,21 +1,36 @@
-version: '3'
+version: '3.8'
+
 services:
   mysqldb:
-    image: mysql:5.6
+    image: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: moviesdb
+      MYSQL_DATABASE: moviesDb
     ports:
       - 3306:3306
     volumes:
-      - mysqldb:/data/db
-  node:
-    restart: always
-    build: ./Dockerfile
+      - db-config:/etc/mysql
+      - db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: node-mysql-app
     ports:
       - 8080:8080
     volumes:
-      - ./:/code
+      - ./:/app
+      - /node_modules
+    depends_on:
+      - mysqldb
+    stdin_open: true
+    tty: true
+
 volumes:
-  mysqldb:
+  db-config:
+  db-data:
+networks:
+  nodenet:
+    driver: nodenet

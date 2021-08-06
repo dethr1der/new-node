@@ -29,7 +29,6 @@ async function run(fileLoaded) {
 
         movies.push(movie);
     }
-    console.log(movies);
     return movies;
 }
 
