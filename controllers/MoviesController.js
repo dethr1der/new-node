@@ -1,6 +1,6 @@
 const db = require("../models");
 const {Op} = require("sequelize");
-const moviesParser = require('../moviesParser');
+const moviesParser = require('../moviesparser');
 
 class MoviesController {
 

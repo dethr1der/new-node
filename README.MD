@@ -4,7 +4,7 @@
 <li>Install NodeJS v14.16 or greater if not installed</li>
 <li>Install MySQL if not installed</li>
 <li>Clone project from this repo</li>
-<li>Rename file dbConfig.example.js to just dbConfig.js and change all required field like in example</li>
+<li>Rename file dbConfig.example.js to just dbconfig.js and change all required field like in example</li>
 <li>run "npm install" command to install all dependencies</li>
 <li>Then launch project using commands "npm run start" for live or "npm run start-dev" for development</li>
 </ol>
@@ -42,6 +42,6 @@
 <li>nodemon</li>
 <li>sequelize - Database ORM</li>
 </ol>
-<h3>Special thanks to htndev (Alexandr Vanilchuk) for help with RegExp in moviesParser.js</h3>
+<h3>Special thanks to htndev (Alexandr Vanilchuk) for help with RegExp in moviesparser.js</h3>
 
 
