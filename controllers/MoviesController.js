@@ -67,6 +67,7 @@ class MoviesController {
                 });
             }));
         }));
+
         const moviesSave = await db.movies.bulkCreate(moviesArray);
 
         const Association = await Promise.all(actorsCreate.map(async (actors, actorsIndex) => {

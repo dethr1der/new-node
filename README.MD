@@ -1,5 +1,18 @@
 <h1>Movies API project</h1>
-<h3>To launch the project you need:</h3>
+<h3>To launch project via Docker:</h3>
+<ol>
+<li>Install docker and all dependencies</li>
+<li>Follow next steps: 
+<ul>
+<li>Clone this project from this repo</li>
+<li>cd the project from the folder where you've cloned</li>
+<li>In cli run the command "docker network create nodenet"</li>
+<li>Then run command "docker compose up"</li>
+</ul>
+</li>
+</ol>
+<p><strong>After all this manipulations wait until project will be composed and test it!</strong></p>
+<h3>To launch the project locally:</h3>
 <ol>
 <li>Install NodeJS v14.16 or greater if not installed</li>
 <li>Install MySQL if not installed</li>
