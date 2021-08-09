@@ -61,7 +61,6 @@ class MoviesController {
         const movies = await moviesParser(file.import.tempFilePath);
 
         movies.forEach((movie, index) => {
-            console.log(movie);
             if (movie.title && movie.title.trim() !== '' || movie.released && new Date().getFullYear() < movie.released < 1895 || movie.format && movie.format.trim() !== '' && movie.format.length >= 2) {
 
                 db.movies.findOrCreate({
@@ -100,7 +99,6 @@ class MoviesController {
 
     async showOneById(req, res) {
         const movieId = req.params.id;
-        console.log(movieId);
         const movie = await db.movies.findOne({where: {id: movieId}, include: [{model: db.actors, as: "actors"}]})
         if (movie !== null) {
             return res.json(movie);
