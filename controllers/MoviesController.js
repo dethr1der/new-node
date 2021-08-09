@@ -60,35 +60,28 @@ class MoviesController {
         const file = req.files;
         const movies = await moviesParser(file.import.tempFilePath);
 
-        const moviesArray = [];
-        let actorsArray = [];
-
         movies.forEach((movie, index) => {
-            moviesArray.push({title: movie.title, released: movie.released, format: movie.format});
-            actorsArray.push(movie.actors);
+            console.log(movie);
+            if (movie.title && movie.title.trim() !== '' || movie.released && new Date().getFullYear() < movie.released < 1895 || movie.format && movie.format.trim() !== '' && movie.format.length >= 2) {
+
+                db.movies.findOrCreate({
+                    where: {
+                        title: movie.title,
+                        released: movie.released,
+                        format: movie.format
+                    }
+                }).then(movieResult => {
+                    if (movieResult[1] !== false) {
+                        movie.actors.forEach((actor, index) => {
+                            db.actors.findOrCreate({where: {name: actor}}).then(actorResult => {
+                                db.moviesActors.create({movieId: movieResult[0].id, actorId: actorResult[0].id});
+                            })
+                        });
+                    }
+                })
+            }
         });
-
-        let actorsCreate = await Promise.all(actorsArray.map(async (actors, index) => {
-            return actorsArray[index] = await Promise.all(actors.map(async (actor, actorIndex) => {
-                return actors[actorIndex] = await db.actors.findOrCreate({
-                    where: {name: actor},
-                    attributes: ['id']
-                });
-            }));
-        }));
-
-        const moviesSave = await db.movies.bulkCreate(moviesArray);
-
-        const Association = await Promise.all(actorsCreate.map(async (actors, actorsIndex) => {
-            return await Promise.all(actors.map(async (actor, index) => {
-                return actor[index] = await db.moviesActors.create({
-                    movieId: moviesSave[actorsIndex].id,
-                    actorId: actor[0].id
-                });
-            }));
-        }));
-
-        res.status(200).send({message: "Films has been exported"});
+        res.status(200).send({message: "Films has been exported. Please wait several minutes to access the data!"});
     }
 
     async show(req, res) {
