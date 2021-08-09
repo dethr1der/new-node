@@ -3,13 +3,14 @@ module.exports = (sequelize, Sequelize) => {
         title: {
             type: Sequelize.STRING,
             allowNull: false,
+            unique: true
         },
         released: {
             type: Sequelize.INTEGER,
-            allowNull: true,
+            allowNull: false,
         },
         format: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
         },
     });
 
