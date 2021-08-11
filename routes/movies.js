@@ -11,6 +11,7 @@ router.post('/movies', [
         max: new Date().getFullYear() + 2
     }).withMessage(`Year of release must be a number from 1895 to ${new Date().getFullYear() + 2}`),
     body('format', "Format can't be empty").not().isEmpty().trim().isLength({min: 2}).withMessage('Format must contain at least 2 symbols'),
+    body('actors', "Actors can't be empty").exists()
 ], moviesController.insertOne);
 
 router.get('/movies/import', (req, res, next) => {
