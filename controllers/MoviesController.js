@@ -2,6 +2,7 @@ const db = require("../models");
 const {Op} = require("sequelize");
 const moviesParser = require('../moviesparser');
 const {validationResult} = require('express-validator');
+const fs = require('fs');
 
 class MoviesController {
 
@@ -58,6 +59,13 @@ class MoviesController {
 
     async import(req, res) {
         const file = req.files;
+        if (req.files === null || req.files.import === null && false) {
+            return res.status(400).json({message: "Files are not found"});
+        }
+        if (file.import.size === 0) {
+            return res.status(400).json({message: "File is empty"});
+        }
+
         const movies = await moviesParser(file.import.tempFilePath);
 
         movies.forEach((movie, index) => {
