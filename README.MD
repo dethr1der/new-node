@@ -7,7 +7,9 @@
 <li>Clone this project from this repo</li>
 <li>cd the project from the folder where you've cloned</li>
 <li>In cli run the command "docker network create nodenet"</li>
-<li>Then run command "docker compose up"</li>
+<li>Build the project: sudo docker build -t films-api .</li>
+<li>Run MySQL service: sudo docker run --rm -d --name mysqldb -e MYSQL_DATABASE='moviesDb' -e MYSQL_USER='test' -e MYSQL_PASSWORD='test' -e MYSQL_ROOT_PASSWORD='root' --network nodenet mysql:latest</li>
+<li>Run the project: sudo docker run --rm --name movies-app --network nodenet -p 8080:8080 -v 'project-location':/app films-api</li>
 </ul>
 </li>
 </ol>

@@ -1,7 +1,8 @@
 FROM node:14
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 EXPOSE 8080
-CMD [ "node", "app.js" ]
+VOLUME [ "/app/node_modules" ]
+CMD [ "npm", "run", "start-dev" ]
